@@ -1,27 +1,27 @@
-async function showWorks(category = 'null') {
+async function initWorks(){
     const resultFetch = await fetch('http://localhost:5678/api/works')
     const data = await resultFetch.json();
 
-    const galleryContenair = document.querySelector('.gallery');
+    const galleryContainer = document.querySelector('.gallery');
 
-    for (let i = 0; i < data.length; i++) {
-        if(category !== data[i].categoryId && category !== 'null') continue;
-        
-        const figure = galleryContenair.appendChild(document.createElement('figure'));
+    for (const el of data) {
+        const work = 
+        `<figure data-category="${el.categoryId}">
+            <img src="${el.imageUrl}" alt="${el.title}">
+            <figcaption>${el.title}</figcaption>
+        </figure>`
 
-        const image = figure.appendChild(document.createElement('img'));
-        image.src = data[i].imageUrl;
-
-        const figcaption = figure.appendChild(document.createElement('figcaption'));
-        figcaption.innerHTML = data[i].title;
+        galleryContainer.insertAdjacentHTML('beforeend', work)
     }
 }
+initWorks();
 
-function hideWorks() {
-    const galleryContenair = document.querySelector('.gallery');
-    while(galleryContenair.firstChild) {
-        galleryContenair.removeChild(galleryContenair.firstChild);
-    }
+function showWorks(category) {
+    const figure = document.querySelectorAll('figure');
+   
+    figure.forEach(el => {
+        el.style.display = category == el.dataset.category || category == 0 ? "block" : "none";
+    })
 }
 
 async function showCategories() {
@@ -30,58 +30,27 @@ async function showCategories() {
 
     const btnList = document.querySelector('.btn-list');
 
-    for (let i = 0; i < data.length; i++) {
-        const li = btnList.appendChild(document.createElement('li'));
-        const btn = li.appendChild(document.createElement('button'));
+    for (const el of data) {
+        const liBtn = 
+        `<li>
+            <button class="btn" data-category="${el.id}">${el.name}</button>
+        </li>`
 
-        btn.classList.add('btn');
-        btn.innerHTML = data[i].name;
-
-        switch(data[i].id) {
-            case 1:
-                btn.setAttribute('data-category', 'objects');
-                break;
-            case 2:
-                btn.setAttribute('data-category', 'appartments');
-                break;
-            case 3:
-                btn.setAttribute('data-category', 'hotels and restaurants');
-                break;
-        }
+        btnList.insertAdjacentHTML('beforeend', liBtn)
     }
 
     const buttons = document.querySelectorAll('.btn');
     buttons.forEach(item => {
         item.addEventListener('click', e => {
             
-            for(let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('btn-active');
+            for (const btn of buttons) {
+                btn.classList.remove('btn-active');
             }
 
-            hideWorks();
-            
-            switch(e.target.dataset.category) {
-                case "all":
-                    buttons[0].classList.toggle("btn-active");
-                    showWorks();
-                    break;
-                case "objects":
-                    buttons[1].classList.toggle("btn-active");
-                    showWorks(1);
-                    break;
-                case "appartments":
-                    buttons[2].classList.toggle("btn-active");
-                    showWorks(2);
-                    break;
-                case "hotels and restaurants":
-                    buttons[3].classList.toggle("btn-active");
-                    showWorks(3);
-                    break;
-            }
-
+            e.target.classList.toggle("btn-active");
+            showWorks(e.target.dataset.category);
         })
     })
 }
 
-showWorks();
 showCategories();
