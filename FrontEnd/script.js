@@ -54,3 +54,8 @@ async function showCategories() {
 }
 
 showCategories();
+
+const token = sessionStorage.getItem('token');
+if(token) {
+    
+}
