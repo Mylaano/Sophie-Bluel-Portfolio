@@ -7,12 +7,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 
 <body>
+	<div class="modal-container">
+		<div class="modal">
+			<div class="modal-top-btn">
+				<button class="modal-comeback">
+					<img src="assets/icons/left_arrow-icon.svg" alt="Left Arrow Icon">
+				</button>
+				<button class="modal-close">
+					<img src="assets/icons/close-icon.svg" alt="Close Icon">
+				</button>
+			</div>
+
+			<p class="modal-title">Titre</p>
+
+			<div class="modal-content">
+
+			</div>
+
+			<div class="modal-bottom-btn">
+				<button>Title</button>
+				<a href="#">Supprimer la galerie</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="editmode">
+		<p><img src="assets/icons/edit-icon.svg" alt="edit icon">Mode édition</p>
+		<button>publier les changements</button>
+	</div>
+
 	<header>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -24,7 +53,7 @@
                     <a href="index.html#contact">contact</a>
                 </li>
 				<li>
-                    <a href="login.html">login</a>
+                    <a href="login.html" class="link-login">login</a>
                 </li>
 				<li>
                     <a href="#"><img src="./assets/icons/instagram.png" alt="Instagram"></a>
@@ -36,9 +65,17 @@
 	<main>
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img src="./assets/images/sophie-bluel.png" alt="Picture of Sophie Bluel">
+				<button class="edit-btn">
+					<img src="assets/icons/edit-icon.svg" alt="edit icon">
+					modifier
+				</button>
 			</figure>
 			<article>
+				<button class="edit-btn">
+					<img src="assets/icons/edit-icon.svg" alt="edit icon">
+					modifier
+				</button>
 				<h2>Designer d'espace</h2>
 				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
 					finale du chantier.</p>
@@ -51,7 +88,13 @@
 		</section>
 
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<h2>
+				Mes Projets
+				<button class="edit-btn">
+					<img src="assets/icons/edit-icon.svg" alt="edit icon">
+					modifier
+				</button>
+			</h2>
 			
 			<div class="filter">
 				<ul class="btn-list">

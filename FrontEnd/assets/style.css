@@ -34,6 +34,10 @@ body {
 	line-height: 1;
 }
 
+header, main, footer {
+	width: 100%;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -61,18 +65,24 @@ input {
 	outline: none;
 }
 
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
 /** end reset css**/
 body {
 	max-width: 1140px;
-	margin:auto;
+	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	background: #FFFEF8;
-
 	min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+	align-items: baseline;
 }
 
 header {
@@ -140,6 +150,13 @@ nav li a {
 
 #introduction figure {
 	flex: 1;
+	position: relative;
+}
+
+#introduction figure button {
+	position: absolute;
+    left: 10%;
+    margin-top: 13px;
 }
 
 #introduction img {
@@ -150,6 +167,12 @@ nav li a {
 
 #introduction article {
 	flex: 1;
+	position: relative;
+}
+
+#introduction article button {
+	position: absolute;
+	top: -39px;
 }
 
 #introduction h2 {
@@ -163,6 +186,13 @@ nav li a {
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+	position: relative;
+}
+
+#portfolio h2 button {
+	position: absolute;
+	margin-left: 31px;
+    bottom: 6px;
 }
 
 .filter {
@@ -180,10 +210,8 @@ nav li a {
 	border: 1px solid #1D6154;
 	padding: 9px 21px;
 	border-radius: 60px;
-	background: none;
 	font-family: 'Syne', sans-serif;
 	font-weight: 700;
-	cursor: pointer;
 	transition: background 400ms;
 }
 
@@ -325,4 +353,139 @@ footer nav ul {
 
 .active {
 	font-weight: 600;
+}
+
+.edit-btn {
+    align-items: flex-end;
+	gap: 8px;
+	padding: 0;
+	display: none;
+}
+
+.edit-btn img {
+	width: 18px;
+	height: 18px;
+}
+
+.editmode {
+	background: #000000;
+	width: 100%;
+	height: 59px;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	gap: 21px;
+	z-index: 1;
+}
+
+.editmode p {
+	font-size: 16px;
+	font-weight: 400;
+	color: #FFFFFF;
+	display: flex;
+    align-items: flex-end;
+    gap: 9px;
+}
+
+.editmode button {
+	background: #FFFFFF;
+	border-radius: 60px;
+	font-family: 'Work Sans';
+	font-weight: 600;
+	font-size: 14px;
+	padding: 11px 23px;
+}
+
+.editmode img {
+	filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(104deg) brightness(103%) contrast(103%);
+}
+
+.modal-container {
+	background: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	z-index: 1;
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal {
+	background: #FFFFFF;
+	border-radius: 10px;
+	width: 630px;
+	height: 731px;
+	padding: 26px 30px 55px;
+}
+
+.modal-top-btn {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.modal-title {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 26px;
+	font-weight: 400;
+	text-align: center;
+}
+
+.modal-close {
+	width: 24px;
+	height: 24px;
+	display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-comeback {
+	visibility: hidden;
+	width: 21px;
+    height: 21px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+	display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    gap: 6px;
+    margin: 46px 105px 0;
+    padding-bottom: 47px;
+	border-bottom: 1px solid #B3B3B3;
+}
+
+.modal-content figure img {
+	width: 78px;
+	height: 104px;
+}
+
+.modal-bottom-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 38px;
+	gap: 23px;
+}
+
+.modal-bottom-btn button {
+	background: #1D6154;
+	border-radius: 60px;
+	font-family: 'Syne';
+	font-size: 14px;
+	font-weight: 700;
+	color: #FFFFFF;
+	padding: 10px 49px;
+}
+
+.modal-bottom-btn a {
+	font-family: 'Syne';
+	font-size: 14px;
+	font-weight: 400;
+	color: #D65353;
 }
