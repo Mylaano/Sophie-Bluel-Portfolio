@@ -61,7 +61,7 @@ a {
 	text-decoration: none;
 }
 
-input {
+input, select {
 	outline: none;
 }
 
@@ -274,9 +274,10 @@ input[type="submit"]{
 	color: white;
 	background-color: #1D6154;
 	margin: 37px auto 28px;
-	width: 180px;
-	text-align: center;
 	border-radius: 60px;
+	border: none;
+	line-height: 36px;
+	cursor: pointer;
 }
 
 footer nav ul {
@@ -335,9 +336,8 @@ footer nav ul {
 }
 
 .login-btn {
-	border: none;
 	font-size: 14px;
-	padding: 9px 38px;
+	width: 179px;
 }
 
 #login form a {
@@ -415,8 +415,8 @@ footer nav ul {
 .modal {
 	background: #FFFFFF;
 	border-radius: 10px;
-	width: 630px;
-	height: 731px;
+	width: calc(630px - 60px);
+	height: auto;
 	padding: 26px 30px 55px;
 }
 
@@ -451,26 +451,160 @@ footer nav ul {
     align-items: center;
 }
 
-.modal-content {
+.modal-gallery {
 	display: grid;
-    grid-template-columns: auto auto auto auto auto;
-    gap: 6px;
-    margin: 46px 105px 0;
-    padding-bottom: 47px;
-	border-bottom: 1px solid #B3B3B3;
+	grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+    margin: 46px calc(105px - 30px) 0;
+    row-gap: 16px;
 }
 
-.modal-content figure img {
-	width: 78px;
-	height: 104px;
+.modal-gallery figure {
+	position: relative;
+	width: 77px;
+	height: 103px;
+}
+
+.modal-gallery figure::after {
+	content: '';
+    position: absolute;
+    top: 6px;
+	right: 26px;
+    background-color: #000000;
+    background-image: url('../assets/icons/move-icon.svg');
+	background-repeat: no-repeat;
+    background-position: center;
+    width: 17px;
+    height: 17px;
+	border-radius: 2px;
+	opacity: 0;
+	cursor: move;
+	transition: opacity 250ms ease-in-out;
+}
+
+.modal-gallery figure:hover::after {
+	opacity: 1;
+}
+
+.modal-gallery figure > img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.modal-gallery figure figcaption {
+	font-size: 12px;
+}
+
+.modal-addwork {
+	display: none;
+	margin: 36px calc(105px - 30px) 0;
+}
+
+.modal-addwork form {
+	display: flex;
+	flex-direction: column;
+}
+
+.upload-work {
+	background: #E8F1F7;
+	border-radius: 3px;
+	height: 169px;
+}
+
+.upload-work-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 28px 0 19px;
+	position: relative;
+}
+
+.upload-work-form input[type="file"] {
+	opacity: 0;
+    width: 173px;
+    height: 36px;
+    position: absolute;
+    left: 29.5%;
+    bottom: 23%;
+}
+
+.upload-work-form input[type="file"]:hover .upload-work button {
+	opacity: 0.8;
+}
+
+.upload-work-form img {
+	width: 58px;
+	height: 46px;
+}
+
+.upload-work-form button {
+	background: #CBD6DC;
+	color: #306685;
+	border-radius: 50px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	padding: 10px 33px;
+	margin: 21px 0 7px;
+}
+
+.upload-work-form p {
+	font-family: 'Work Sans';
+	font-size: 10px;
+	font-weight: 400;
+	color: #444444;
+}
+
+.inputs-addwork {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid #B3B3B3;
+    padding-bottom: 47px;
+}
+
+.inputs-addwork input[type="text"] {
+	margin-bottom: 21px;
+}
+
+.modal-addwork form label {
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	color: #3D3D3D;
+	margin-bottom: 10px;
+}
+
+.modal-addwork form input[type="text"],
+.modal-addwork form select {
+	background: #FFFFFF;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+	height: 51px;
+	padding: 0 16px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	color: #444444;
+}
+
+.modal-addwork form select {
+	appearance: none;
+	-webkit-appearance: none;
+	background-image: url('icons/select_arrow-icon.svg');
+	background-repeat: no-repeat;
+	background-position: calc(100% - 29px) center;
 }
 
 .modal-bottom-btn {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 38px;
 	gap: 23px;
+	margin: 38px calc(105px - 30px) 0;
+	padding-top: 47px;
+    border-top: 1px solid #B3B3B3;
 }
 
 .modal-bottom-btn button {
@@ -488,4 +622,37 @@ footer nav ul {
 	font-size: 14px;
 	font-weight: 400;
 	color: #D65353;
+}
+
+.btn-del-icon {
+    position: absolute;
+    background-color: #000000;
+    border-radius: 2px;
+    width: 17px;
+    height: 17px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+	top: 6px;
+	right: 6px;
+}
+
+.btn-del-icon img {
+	width: 9px;
+	height: 9px;
+}
+
+.btn-submit-work {
+	width: 237px;
+}
+
+.upload-work-img {
+	justify-content: center;
+	height: 100%;
+}
+
+.current-img-upload {
+	width: 129px;
+    height: 100%;
+	object-fit: cover;
 }

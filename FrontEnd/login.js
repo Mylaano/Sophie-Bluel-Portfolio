@@ -11,8 +11,8 @@ form.addEventListener('submit', async (e) => {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify({
-            email: [...data][0][1],
-            password: [...data][1][1]
+            email: data.get('email'),
+            password: data.get('password')
         })
     })
 
@@ -21,8 +21,7 @@ form.addEventListener('submit', async (e) => {
 
         sessionStorage.setItem('token', result.token);
         window.location = "index.html";
-    } else {
-        const errorLogin = document.getElementById('error-login');
-        errorLogin.style.visibility = 'visible';
+        return;
     }
+    document.getElementById('error-login').style.visibility = 'visible';
 })
