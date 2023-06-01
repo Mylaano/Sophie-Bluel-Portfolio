@@ -1,42 +1,53 @@
 // Functions
 
-async function initWorks() {
-    const resultFetch = await fetch('http://localhost:5678/api/works')
-    const data = await resultFetch.json();
+function showWork(el) {
 
-    for (const el of data) {
-        const work = 
+    // Add this work on the section "Mes projets"
+    const work = 
         `<figure data-category="${el.categoryId}" data-id="${el.id}">
             <img src="${el.imageUrl}" alt="${el.title}">
             <figcaption>${el.title}</figcaption>
         </figure>`;
+    
+    document.querySelector('.gallery').insertAdjacentHTML('beforeend', work);
 
-        document.querySelector('.gallery').insertAdjacentHTML('beforeend', work);
-    }
-
-    const galleryContainer = document.querySelector('.gallery');
-
-    for(let i = 1; i < galleryContainer.childNodes.length; i++) {
-        const content = 
-        `<figure data-id="${galleryContainer.childNodes[i].dataset.id}">
-            <img src="${galleryContainer.childNodes[i].childNodes[1].src}" alt="Photo d'une réalisation">
+    // Add this work on the modal
+    const content = 
+        `<figure data-id="${el.id}">
+            <img src="${el.imageUrl}" alt="${el.title}">
             <figcaption>éditer</figcaption>
-            <button class="btn-del-icon">
+            <button class="btn-del-icon" data-id="${el.id}">
                 <img src="assets/icons/bin-icon.svg" alt="Icône d'une corbeille">
             </button>
         </figure>`;
- 
-        document.querySelector('.modal-gallery').insertAdjacentHTML('beforeend', content);
-    }
 
-    if(sessionStorage.getItem('token') !== null) {
-        // Deleting a work by clicking on the trash button
-        document.querySelectorAll('.btn-del-icon').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                deleteWork(e.target.parentNode.parentNode.dataset.id);
+    document.querySelector('.modal-gallery').insertAdjacentHTML('beforeend', content);
+}
+
+async function initWorks() {
+    try {
+        const resultFetch = await fetch('http://localhost:5678/api/works');
+        const data = await resultFetch.json();
+
+        for (const el of data) {
+            showWork(el);
+        }
+
+        // Delete the work
+        if(sessionStorage.getItem('token') !== null) {
+            // Deleting a work by clicking on the trash button
+            document.querySelectorAll('.btn-del-icon').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    deleteWork(e.target.dataset.id);
+                })
             })
-        })
+        }
+    }
+    catch(error) {
+        alert("Une erreur est survenue lors de l'initialisation des travaux.");
+        console.log(error);
     }
 }
 
@@ -66,14 +77,17 @@ async function addWork() {
             body: formData
         })
         if(response.ok) {
-            document.querySelector('.modal-container').style.display = 'none';
-            console.log('Projet créé avec succès.');
+            showPhotoGallery();
+
+            const data = await response.json();
+            showWork(data)
         }
         else {
             console.log("Erreur lors de la création du projet.");
         }
     }
     catch(error) {
+        alert("Une erreur est survenue lors de l'ajout d'un nouveau projet.");
         console.log(error);
     }
 }
@@ -89,8 +103,7 @@ async function deleteWork(id) {
         })
         if(resultFetch.ok) {
             // Delete the figure from the gallery and delete the figure from the modal
-            const figure = document.querySelectorAll(`figure[data-id="${id}"]`);
-            figure.forEach(item => {
+            document.querySelectorAll(`figure[data-id="${id}"]`).forEach(item => {
                 item.parentNode.removeChild(item);
             })
         }
@@ -107,34 +120,39 @@ function filterWorks(category) {
 }
 
 async function showCategories() {
-    const resultFetch = await fetch('http://localhost:5678/api/categories');
-    const data = await resultFetch.json();
+    try {
+        const resultFetch = await fetch('http://localhost:5678/api/categories');
+        const data = await resultFetch.json();
 
-    for (const el of data) {
-        // Add the categories to the filter bar
-        const liBtn = 
-        `<li>
-            <button class="btn" data-category="${el.id}">${el.name}</button>
-        </li>`;
+        for (const el of data) {
+            // Add the categories to the filter bar
+            const liBtn = 
+            `<li>
+                <button class="btn" data-category="${el.id}">${el.name}</button>
+            </li>`;
 
-        document.querySelector('.btn-list').insertAdjacentHTML('beforeend', liBtn);
+            document.querySelector('.btn-list').insertAdjacentHTML('beforeend', liBtn);
 
-        // Add the categories to the select on the modal
-        document.querySelector('.categories-addwork').insertAdjacentHTML('beforeend', `<option value="${el.id}">${el.name}</option>`);
-    }
+            // Add the categories to the select on the modal
+            document.querySelector('.categories-addwork').insertAdjacentHTML('beforeend', `<option value="${el.id}">${el.name}</option>`);
+        }
 
-    // Filter works
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(item => {
-        item.addEventListener('click', (e) => {
-            for (const btn of buttons) {
-                btn.classList.remove('btn-active');
-            }
-        
-            e.target.classList.toggle("btn-active");
-            filterWorks(e.target.dataset.category);
+        // Filter works
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(item => {
+            item.addEventListener('click', (e) => {
+                for (const btn of buttons) {
+                    btn.classList.remove('btn-active');
+                }
+            
+                e.target.classList.toggle("btn-active");
+                filterWorks(e.target.dataset.category);
+            })
         })
-    })
+    } catch (e) {
+        console.log(e);
+        alert("Une erreur est survenue lors de la récupération des catégories.");
+    }
 }
 
 function showPhotoGallery() {
@@ -228,6 +246,9 @@ if(sessionStorage.getItem('token') !== null) {
         // Reset the title input
         document.querySelector('.title-addwork').value = '';
 
+        // Reset image input element
+        document.querySelector('.img-addwork').value = '';
+
         // Reset the select element
         document.querySelector('.categories-addwork').selectedIndex = 0;
     })
@@ -270,25 +291,12 @@ if(sessionStorage.getItem('token') !== null) {
             alt="${e.target.files[0].name}" 
             class="current-img-upload">`
         );
-
-        // Check if the input title is not empty
-        const titleAddWork = document.querySelector('.title-addwork');
-        if(titleAddWork.value.length > 0) {
-            const btnSubmitWork = document.querySelector('.btn-submit-work');
-            btnSubmitWork.style.backgroundColor = titleAddWork.value.length <= 0? 'rgb(167, 167, 167)' : '';
-        }
     })
 
-    // Récupérer le champ input form dans la classe inputs-addwork
-    const titleAddWork = document.querySelector('.title-addwork');
-    titleAddWork.addEventListener('input', (e) => {
-        e.preventDefault();
-        
-        if(document.querySelector('.img-addwork').value.length > 0) {
-            const btnSubmitWork = document.querySelector('.btn-submit-work');
-            btnSubmitWork.style.backgroundColor = titleAddWork.value.length <= 0 ? 'rgb(167, 167, 167)' : '';
-        }
-    })
+    // Check if the inputs is empty or not for change the submit button into green
+    document.getElementById('addwork-form').addEventListener('input', () => {
+        document.querySelector('.btn-submit-work').style.backgroundColor = document.querySelector('.title-addwork').value.length > 0 && document.querySelector('.img-addwork').value.length > 0 ? '' : 'rgb(167, 167, 167)';
+    });
 
     // Submit the work
     document.getElementById('addwork-form').addEventListener('submit', (e) => {

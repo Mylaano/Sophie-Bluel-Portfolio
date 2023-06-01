@@ -640,6 +640,7 @@ footer nav ul {
 .btn-del-icon img {
 	width: 9px;
 	height: 9px;
+	pointer-events: none;
 }
 
 .btn-submit-work {
