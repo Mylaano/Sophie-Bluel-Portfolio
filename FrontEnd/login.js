@@ -4,6 +4,7 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const data = new FormData(form);
+    console.log(data);
 
     const response = await fetch('http://localhost:5678/api/users/login', {
         method: 'POST',
@@ -20,7 +21,7 @@ form.addEventListener('submit', async (e) => {
         const result = await response.json();
 
         sessionStorage.setItem('token', result.token);
-        window.location = "index.html";
+        /*window.location = "index.html";*/
         return;
     }
     document.getElementById('error-login').style.visibility = 'visible';
